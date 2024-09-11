@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/user/GitRepositories/fgv_test2/catkin_ws/build/testpackage/catkin_generated/installspace/my_new_package.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/user/GitRepositories/fgv_test2/catkin_ws/build/testpackage/catkin_generated/installspace/testpackage.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/my_new_package/cmake" TYPE FILE FILES
-    "/home/user/GitRepositories/fgv_test2/catkin_ws/build/testpackage/catkin_generated/installspace/my_new_packageConfig.cmake"
-    "/home/user/GitRepositories/fgv_test2/catkin_ws/build/testpackage/catkin_generated/installspace/my_new_packageConfig-version.cmake"
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/testpackage/cmake" TYPE FILE FILES
+    "/home/user/GitRepositories/fgv_test2/catkin_ws/build/testpackage/catkin_generated/installspace/testpackageConfig.cmake"
+    "/home/user/GitRepositories/fgv_test2/catkin_ws/build/testpackage/catkin_generated/installspace/testpackageConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/my_new_package" TYPE FILE FILES "/home/user/GitRepositories/fgv_test2/catkin_ws/src/testpackage/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/testpackage" TYPE FILE FILES "/home/user/GitRepositories/fgv_test2/catkin_ws/src/testpackage/package.xml")
 endif()
 
