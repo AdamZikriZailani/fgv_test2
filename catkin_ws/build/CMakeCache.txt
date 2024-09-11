@@ -477,10 +477,10 @@ lib:FILEPATH=/opt/ros/noetic/lib/libxmlrpcpp.so
 message_runtime_DIR:PATH=/opt/ros/noetic/share/message_runtime/cmake
 
 //Value Computed by CMake
-my_new_package_BINARY_DIR:STATIC=/home/user/GitRepositories/fgv_test2/catkin_ws/build/my_new_package
+my_new_package_BINARY_DIR:STATIC=/home/user/GitRepositories/fgv_test2/catkin_ws/build/testpackage
 
 //Value Computed by CMake
-my_new_package_SOURCE_DIR:STATIC=/home/user/GitRepositories/fgv_test2/catkin_ws/src/my_new_package
+my_new_package_SOURCE_DIR:STATIC=/home/user/GitRepositories/fgv_test2/catkin_ws/src/testpackage
 
 //The directory containing a CMake configuration file for rosconsole.
 rosconsole_DIR:PATH=/opt/ros/noetic/share/rosconsole/cmake
