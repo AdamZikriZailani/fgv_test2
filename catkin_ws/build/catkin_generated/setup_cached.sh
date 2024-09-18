@@ -7,4 +7,7 @@
 # new environment variables
 
 # modified environment variables
-export PWD='/home/user/GitRepositories/fgv_test2/catkin_ws/build'
+export CMAKE_PREFIX_PATH="/home/adam/GitRepositories/fgv_test2/catkin_ws/devel:$CMAKE_PREFIX_PATH"
+export PWD='/home/adam/GitRepositories/fgv_test2/catkin_ws/build'
+export ROSLISP_PACKAGE_DIRECTORIES='/home/adam/GitRepositories/fgv_test2/catkin_ws/devel/share/common-lisp'
+export ROS_PACKAGE_PATH="/home/adam/GitRepositories/fgv_test2/catkin_ws/src:$ROS_PACKAGE_PATH"

@@ -1,4 +1,4 @@
-prefix=/home/user/GitRepositories/fgv_test2/catkin_ws/devel
+prefix=/home/adam/GitRepositories/fgv_test2/catkin_ws/devel
 
 Name: testpackage
 Description: Description of testpackage

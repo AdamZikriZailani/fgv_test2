@@ -1,8 +1,8 @@
-# Install script for directory: /home/user/GitRepositories/fgv_test2/catkin_ws/src/testpackage
+# Install script for directory: /home/adam/GitRepositories/fgv_test2/catkin_ws/src/testpackage
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/user/GitRepositories/fgv_test2/catkin_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/adam/GitRepositories/fgv_test2/catkin_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/user/GitRepositories/fgv_test2/catkin_ws/build/testpackage/catkin_generated/installspace/testpackage.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/adam/GitRepositories/fgv_test2/catkin_ws/build/testpackage/catkin_generated/installspace/testpackage.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/testpackage/cmake" TYPE FILE FILES
-    "/home/user/GitRepositories/fgv_test2/catkin_ws/build/testpackage/catkin_generated/installspace/testpackageConfig.cmake"
-    "/home/user/GitRepositories/fgv_test2/catkin_ws/build/testpackage/catkin_generated/installspace/testpackageConfig-version.cmake"
+    "/home/adam/GitRepositories/fgv_test2/catkin_ws/build/testpackage/catkin_generated/installspace/testpackageConfig.cmake"
+    "/home/adam/GitRepositories/fgv_test2/catkin_ws/build/testpackage/catkin_generated/installspace/testpackageConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/testpackage" TYPE FILE FILES "/home/user/GitRepositories/fgv_test2/catkin_ws/src/testpackage/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/testpackage" TYPE FILE FILES "/home/adam/GitRepositories/fgv_test2/catkin_ws/src/testpackage/package.xml")
 endif()
 
