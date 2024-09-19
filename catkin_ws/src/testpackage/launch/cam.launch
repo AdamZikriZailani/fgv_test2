@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- Argument for the first camera -->
+    <arg name="camera_name_1" default="/dev/video0"/>
+    <!-- Argument for the second camera -->
+    <arg name="camera_name_2" default="/dev/video2"/>
+
+    <!-- Node for the first camera -->
+    <node name="my_webcam_1" pkg="testpackage" type="image_publisher_launch.py" output="screen">
+        <param name="camera_name" type="string" value="$(arg camera_name_1)" />
+    </node>
+
+    <!-- Node for the second camera -->
+    <node name="my_webcam_2" pkg="testpackage" type="image_publisher_launch.py" output="screen">
+        <param name="camera_name" type="string" value="$(arg camera_name_2)" />
+    </node>
+</launch>

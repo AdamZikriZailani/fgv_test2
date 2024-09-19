@@ -1,0 +1,4 @@
+Jamboard for human detection 
+
+
+chmod +x /home/adam/GitRepositories/fgv_test2/catkin_ws/src/testpackage/scripts/*.py
