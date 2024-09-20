@@ -22,6 +22,7 @@ def publish_image(camera_name, topic_name):
         # Publish the image to the specified topic
         try:
             img_msg = bridge.cv2_to_imgmsg(img, "bgr8")
+            
             image_pub.publish(img_msg)
             rospy.loginfo(f"Image published to {topic_name}")
         except CvBridgeError as error:
