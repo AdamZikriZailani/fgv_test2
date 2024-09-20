@@ -19,6 +19,18 @@ def publish_image(camera_name, topic_name):
             rospy.logerr("Could not grab a frame!")
             break
 
+        # Determine the size of the square
+        height, width, _ = img.shape
+        size = min(height, width)
+
+        # Crop the image to a square
+        start_x = (width - size) // 2
+        start_y = (height - size) // 2
+        img = img[start_y:start_y + size, start_x:start_x + size]
+
+        # Rotate the image 90 degrees to the left
+        img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+
         # Publish the image to the specified topic
         try:
             img_msg = bridge.cv2_to_imgmsg(img, "bgr8")
