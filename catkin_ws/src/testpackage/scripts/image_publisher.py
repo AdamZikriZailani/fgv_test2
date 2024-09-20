@@ -11,16 +11,12 @@ def publish_image():
     image_pub = rospy.Publisher("image_raw", Image, queue_size=10)
     bridge = CvBridge()
     capture = cv2.VideoCapture("/dev/video0")
-
     while not rospy.is_shutdown():
         # Capture a frame
         ret, img = capture.read()
         if not ret:
             rospy.ERROR("Could not grab a frame!")
             break
-
-        img = cv2.flip(img, -1)
-        rospy.loginfo("Image rotated 180 degrees")
 
         # Publish the image to the topic image_raw
         try:
@@ -30,7 +26,6 @@ def publish_image():
             rospy.loginfo("Image published to /image_raw")
         except CvBridgeError as error:
             rospy.logerr(f"Error converting image: {error}")
-
 
 if __name__=="__main__":
     rospy.init_node("my_cam", anonymous=True)

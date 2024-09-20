@@ -1,45 +1,43 @@
 #!/usr/bin/python3
 
-import cv2
 import rospy
+import cv2
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
+import sys
 
-class camera_publisher:
+def publish_image(camera_name, topic_name):
+    """Capture frames from a camera and publish it to the specified topic"""
+    image_pub = rospy.Publisher(topic_name, Image, queue_size=10)
+    bridge = CvBridge()
+    capture = cv2.VideoCapture(camera_name)
 
-    def __init__(self):
-        """Initialize the class
-        """
-        self.image_pub = rospy.Publisher("image_raw", Image, queue_size=10)
-        self.bridge = CvBridge()
-        self.capture = cv2.VideoCapture(rospy.get_param("my_webcam/camera_name"))
+    while not rospy.is_shutdown():
+        # Capture a frame
+        ret, img = capture.read()
+        if not ret:
+            rospy.logerr("Could not grab a frame!")
+            break
 
-    def publish_image(self):
-        """Capture frames from a camera and publish it to the topic image_raw
-        """
-        while not rospy.is_shutdown():
-            # Capture a frame
-            ret, img = self.capture.read()
-            if not ret:
-                rospy.ERROR("Could not grab a frame!")
-                break
+        # Publish the image to the specified topic
+        try:
+            img_msg = bridge.cv2_to_imgmsg(img, "bgr8")
+            image_pub.publish(img_msg)
+            rospy.loginfo(f"Image published to {topic_name}")
+        except CvBridgeError as error:
+            rospy.logerr(f"Error converting image: {error}")
 
-            # Publish the image to the topic image_raw
-            try:
-                img_msg = self.bridge.cv2_to_imgmsg(img, "bgr8")
-                img_msg.header.stamp = rospy.Time.now()
-                self.image_pub.publish(img_msg)
-            except CvBridgeError as error:
-                print(error)
-
-
-if __name__=="__main__":
-    cam_pub = camera_publisher()
-    rospy.init_node("my_cam", anonymous=True)
-    print("Image is being published to the topic image_raw...")
-    cam_pub.publish_image()
+if __name__ == "__main__":
+    rospy.init_node("image_publisher", anonymous=True)
+    if len(sys.argv) < 3:
+        rospy.logerr("Usage: rosrun testpackage image_publisher.py <camera_name> <topic_name>")
+        sys.exit(1)
+    camera_name = sys.argv[1]
+    topic_name = sys.argv[2]
+    rospy.loginfo(f"Publishing images from {camera_name} to {topic_name}")
+    publish_image(camera_name, topic_name)
     
     try:
         rospy.spin()
     except KeyboardInterrupt:
-        print("Shutting down!")
+        rospy.loginfo("Shutting down!")
