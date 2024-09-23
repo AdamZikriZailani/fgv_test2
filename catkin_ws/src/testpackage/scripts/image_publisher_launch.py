@@ -49,7 +49,8 @@ if __name__ == "__main__":
         sys.exit(1)
     camera_name = sys.argv[1]
     topic_name = sys.argv[2]
-    frame_rate = rospy.get_param("~frame_rate", 10)  # Default frame rate is 10 FPS
+    frame_rate = int(sys.argv [3])
+    #frame_rate = rospy.get_param("~frame_rate", 10)  # Default frame rate is 10 FPS
     rospy.loginfo(f"Publishing images from {camera_name} to {topic_name} at {frame_rate} FPS")
     publish_image(camera_name, topic_name, frame_rate)
     

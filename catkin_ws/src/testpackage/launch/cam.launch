@@ -10,6 +10,8 @@
     <arg name="camera_name_2" default="camera_2"/>
     <arg name="subscriber_name_2" default="subscriber_2"/>
 
+    <arg name="fps" default = "24"/>
+
 
     <!-- Argument for the first camera -->
     <!-- <arg name="camera_name_1" default="/dev/video0"/> -->
@@ -17,12 +19,12 @@
     <!-- <arg name="camera_name_2" default="/dev/video2"/> -->
 
     <!-- Node for the first camera -->
-    <node name="$(arg camera_name_1)" pkg="testpackage" type="image_publisher_launch.py" output="screen" args="$(arg camera_ID_1) /image_raw_1 10">
+    <node name="$(arg camera_name_1)" pkg="testpackage" type="image_publisher_launch.py" output="screen" args="$(arg camera_ID_1) /image_raw_1 $(arg fps)">
         <param name="camera_name" type="string" value="$(arg camera_name_1)" />
     </node>
 
     <!-- Node for the second camera -->
-    <node name="$(arg camera_name_2)" pkg="testpackage" type="image_publisher_launch.py" output="screen" args="$(arg camera_ID_2) /image_raw_2 10">
+    <node name="$(arg camera_name_2)" pkg="testpackage" type="image_publisher_launch.py" output="screen" args="$(arg camera_ID_2) /image_raw_2 $(arg fps)">
         <param name="camera_name" type="string" value="$(arg camera_name_2)" />
     </node>
 

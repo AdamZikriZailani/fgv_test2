@@ -55,7 +55,7 @@
     </node>
 
         <!-- Subscriber node for the second camera -->
-    <node name="image_subscriber_2" pkg="testpackage" type="image_subscriber.py" args="$(arg camera_name_2)/image_raw" output="screen">
+    <node name="$(arg subscriber_name_2)" pkg="testpackage" type="image_subscriber.py" args="$(arg camera_name_2)/image_raw" output="screen">
         <param name="topic_name" type="string" value="$(arg camera_name_2)/image_raw" />
     </node>
 
