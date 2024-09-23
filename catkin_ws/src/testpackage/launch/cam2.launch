@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- Argument for the first camera -->
+    <!-- <arg name="camera_name_1" default="/dev/video0"/> -->
+    <!-- Argument for the second camera -->
+    <!-- <arg name="camera_name_2" default="/dev/video2"/> -->
+
+    <!-- First camera arguments -->
+    <arg name = "camera_name_1" default = "camera_1"/>
+    <arg name = "subscriber_name_1" default = "subscriber_1"/>
+
+    <arg name = "camera_name_2" default = "camera_2"/>
+    <arg name = "subscriber_name_2" default = "subscriber_2"/>
+
+
+    <group ns="$(arg camera_name_1)">
+        <node pkg="libuvc_camera" type="camera_node" name="$(arg camera_name_1)">
+            <param name="vendor" value="0x2560"/>
+            <param name="product" value="0xc128"/>
+            <param name="serial" value=""/>
+            <param name="index" value="0"/>
+            <param name="width" value="1920"/>
+            <param name="height" value="1200"/>
+            <param name="video_mode" value="mjpeg"/>
+            <param name="frame_rate" value="114"/>
+        </node>
+    </group>
+
+    <group ns="$(arg camera_name_2)">
+        <node pkg="libuvc_camera" type="camera_node" name="$(arg camera_name_2)">
+            <param name="vendor" value="0x2560"/>
+            <param name="product" value="0xc128"/>
+            <param name="serial" value=""/>
+            <param name="index" value="1"/>
+            <param name="width" value="1920"/>
+            <param name="height" value="1200"/>
+            <param name="video_mode" value="mjpeg"/>
+            <param name="frame_rate" value="114"/>
+        </node>
+    </group>
+
+    <!-- Node for the first camera -->
+    <!-- <node name="my_webcam_1" pkg="testpackage" type="image_publisher_launch.py" output="screen" args="$(arg camera_name_1) /image_raw_1">
+        <param name="camera_name" type="string" value="$(arg camera_name_1)" />
+    </node> -->
+
+    <!-- Node for the second camera -->
+    <!-- <node name="my_webcam_2" pkg="testpackage" type="image_publisher_launch.py" output="screen" args="$(arg camera_name_2) /image_raw_2">
+        <param name="camera_name" type="string" value="$(arg camera_name_2)" />
+    </node> -->
+
+    <!-- Subscriber node for the first camera -->
+    <node name="$(arg subscriber_name_1)" pkg="testpackage" type="image_subscriber.py" args="$(arg camera_name_1)/image_raw" output="screen">
+        <param name="topic_name" type="string" value="$(arg camera_name_1)/image_raw" />
+    </node>
+
+        <!-- Subscriber node for the second camera -->
+    <node name="image_subscriber_2" pkg="testpackage" type="image_subscriber.py" args="$(arg camera_name_2)/image_raw" output="screen">
+        <param name="topic_name" type="string" value="$(arg camera_name_2)/image_raw" />
+    </node>
+
+    <!-- Subscriber node for the second camera -->
+    <!-- <node name="image_subscriber_2" pkg="testpackage" type="image_subscriber.py" args="/image_raw_2" output="screen">
+        <param name="topic_name" type="string" value="/image_raw_2" />
+    </node> -->
+
+</launch>
