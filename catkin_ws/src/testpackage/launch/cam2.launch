@@ -22,7 +22,7 @@
             <param name="width" value="1920"/>
             <param name="height" value="1200"/>
             <param name="video_mode" value="mjpeg"/>
-            <param name="frame_rate" value="114"/>
+            <param name="frame_rate" value="60"/>
         </node>
     </group>
 
@@ -35,7 +35,7 @@
             <param name="width" value="1920"/>
             <param name="height" value="1200"/>
             <param name="video_mode" value="mjpeg"/>
-            <param name="frame_rate" value="114"/>
+            <param name="frame_rate" value="60"/>
         </node>
     </group>
 

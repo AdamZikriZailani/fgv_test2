@@ -6,11 +6,12 @@ from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 import sys
 
-def publish_image(camera_name, topic_name):
+def publish_image(camera_name, topic_name, frame_rate):
     """Capture frames from a camera and publish it to the specified topic"""
     image_pub = rospy.Publisher(topic_name, Image, queue_size=10)
     bridge = CvBridge()
     capture = cv2.VideoCapture(camera_name)
+    rate = rospy.Rate(frame_rate)
 
     while not rospy.is_shutdown():
         # Capture a frame
@@ -34,11 +35,12 @@ def publish_image(camera_name, topic_name):
         # Publish the image to the specified topic
         try:
             img_msg = bridge.cv2_to_imgmsg(img, "bgr8")
-            
             image_pub.publish(img_msg)
             rospy.loginfo(f"Image published to {topic_name}")
         except CvBridgeError as error:
             rospy.logerr(f"Error converting image: {error}")
+
+        rate.sleep()
 
 if __name__ == "__main__":
     rospy.init_node("image_publisher", anonymous=True)
@@ -47,8 +49,9 @@ if __name__ == "__main__":
         sys.exit(1)
     camera_name = sys.argv[1]
     topic_name = sys.argv[2]
-    rospy.loginfo(f"Publishing images from {camera_name} to {topic_name}")
-    publish_image(camera_name, topic_name)
+    frame_rate = rospy.get_param("~frame_rate", 10)  # Default frame rate is 10 FPS
+    rospy.loginfo(f"Publishing images from {camera_name} to {topic_name} at {frame_rate} FPS")
+    publish_image(camera_name, topic_name, frame_rate)
     
     try:
         rospy.spin()
