@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <node name="yolov5_node" pkg="yolov5_ros" type="yolov5_node.py" output="screen"/>
+</launch>

@@ -1,8 +1,0 @@
-prefix=/home/user/GitRepositories/fgv_test2/catkin_ws/devel
-
-Name: testpackage
-Description: Description of testpackage
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
