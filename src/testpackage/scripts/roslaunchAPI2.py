@@ -35,7 +35,7 @@ def launch_cameras(camera_count):
         launch_processes.append((launch, launch_file, launch_args))
         launch.start()
     
-    # # Launch an extra image subscriber node for the first camera
+    # Launch an extra image subscriber node for the first camera
     # extra_subscriber_name = "extra_image_subscriber_1"
     # extra_subscriber_args = [
     #     f"namespace:=camera_1_group",
@@ -65,7 +65,7 @@ def launch_cameras(camera_count):
 
 if __name__ == "__main__":
     rospy.init_node("camera_launcher", anonymous=True)
-    camera_count = 2  # Example camera count
+    camera_count = 1  # Example camera count
     launch_cameras(camera_count)
 
 # import subprocess
