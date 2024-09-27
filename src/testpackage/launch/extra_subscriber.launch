@@ -1,0 +1,15 @@
+<launch>       
+<!--     
+    <arg name="namespace" default="1"/>   
+    <arg name="camera_name" default="1"/>
+    <arg name="subscriber_name" default="1"/>
+    <arg name="detection_topic" default="1"/>
+
+    <group ns="$(arg namespace)">
+
+    </group>
+    <node name="$(arg subscriber_name)" pkg="testpackage" type="image_subscriber.py" args="$(arg detection_topic)" output="screen">
+        <param name="topic_name" type="string" value="$(arg namespace)/$(arg detection_topic)" />
+    </node> -->
+
+</launch>

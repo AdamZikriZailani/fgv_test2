@@ -1,4 +1,4 @@
-prefix=/home/adam/GitRepositories/fgv_test2/devel
+prefix=/home/user/GitRepositories/fgv_test2/devel
 
 Name: yolov5_ros
 Description: Description of yolov5_ros

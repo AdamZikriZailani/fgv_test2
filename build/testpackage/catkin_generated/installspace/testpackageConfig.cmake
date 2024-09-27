@@ -67,14 +67,14 @@ set(testpackage_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(testpackage_SOURCE_PREFIX /home/adam/GitRepositories/fgv_test2/src/testpackage)
-  set(testpackage_DEVEL_PREFIX /home/adam/GitRepositories/fgv_test2/devel)
+  set(testpackage_SOURCE_PREFIX /home/user/GitRepositories/fgv_test2/src/testpackage)
+  set(testpackage_DEVEL_PREFIX /home/user/GitRepositories/fgv_test2/devel)
   set(testpackage_INSTALL_PREFIX "")
   set(testpackage_PREFIX ${testpackage_DEVEL_PREFIX})
 else()
   set(testpackage_SOURCE_PREFIX "")
   set(testpackage_DEVEL_PREFIX "")
-  set(testpackage_INSTALL_PREFIX /home/adam/GitRepositories/fgv_test2/install)
+  set(testpackage_INSTALL_PREFIX /home/user/GitRepositories/fgv_test2/install)
   set(testpackage_PREFIX ${testpackage_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/adam/GitRepositories/fgv_test2/install/lib;/home/adam/GitRepositories/fgv_test2/devel/lib;/opt/ros/noetic/lib)
+    foreach(path /home/user/GitRepositories/fgv_test2/install/lib;/home/user/GitRepositories/fgv_test2/devel/lib;/opt/ros/noetic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

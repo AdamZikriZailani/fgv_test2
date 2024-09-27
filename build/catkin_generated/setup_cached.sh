@@ -9,4 +9,5 @@
 # modified environment variables
 export LD_LIBRARY_PATH='/opt/ros/noetic/lib'
 export PKG_CONFIG_PATH='/opt/ros/noetic/lib/pkgconfig'
-export PWD='/home/adam/GitRepositories/fgv_test2/build'
+export PWD='/home/user/GitRepositories/fgv_test2/build'
+export ROS_PACKAGE_PATH='/home/user/GitRepositories/fgv_test2/src:/opt/ros/noetic/share'

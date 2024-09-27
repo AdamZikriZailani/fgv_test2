@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/adam/GitRepositories/fgv_test2/src
+CMAKE_SOURCE_DIR = /home/user/GitRepositories/fgv_test2/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/adam/GitRepositories/fgv_test2/build
+CMAKE_BINARY_DIR = /home/user/GitRepositories/fgv_test2/build
 
 # Utility rule file for doxygen.
 
@@ -67,6 +67,6 @@ CMakeFiles/doxygen.dir/clean:
 .PHONY : CMakeFiles/doxygen.dir/clean
 
 CMakeFiles/doxygen.dir/depend:
-	cd /home/adam/GitRepositories/fgv_test2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/adam/GitRepositories/fgv_test2/src /home/adam/GitRepositories/fgv_test2/src /home/adam/GitRepositories/fgv_test2/build /home/adam/GitRepositories/fgv_test2/build /home/adam/GitRepositories/fgv_test2/build/CMakeFiles/doxygen.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/user/GitRepositories/fgv_test2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/user/GitRepositories/fgv_test2/src /home/user/GitRepositories/fgv_test2/src /home/user/GitRepositories/fgv_test2/build /home/user/GitRepositories/fgv_test2/build /home/user/GitRepositories/fgv_test2/build/CMakeFiles/doxygen.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/doxygen.dir/depend
 

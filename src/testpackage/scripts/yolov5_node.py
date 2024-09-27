@@ -11,7 +11,7 @@ import sys
 class YOLOv5Node:
     def __init__(self, image_topic, detection_topic):
         self.bridge = CvBridge()
-        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
+        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5m', pretrained=True)
         self.model.classes = [0]
         self.image_sub = rospy.Subscriber(image_topic, Image, self.image_callback)
         self.image_pub = rospy.Publisher(detection_topic, Image, queue_size=10)
@@ -33,9 +33,9 @@ class YOLOv5Node:
             rospy.logerr(f"CvBridge Error: {e}")
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        rospy.logerr("Usage: yolov5_node.py <image_topic> <detection_topic>")
-        sys.exit(1)
+    # if len(sys.argv) != 2:
+    #     rospy.logerr("Usage: yolov5_node.py <image_topic> <detection_topic>")
+    #     sys.exit(1)
 
     image_topic = sys.argv[1]
     detection_topic = sys.argv[2]
