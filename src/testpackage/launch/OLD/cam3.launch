@@ -1,0 +1,137 @@
+<?xml version="1.0" xmlns:xacro="http://www.ros.org/wiki/xacro"?>
+<launch>
+
+    <!--arguments-->
+    <!-- <arg name="camera_ID_1" default="/dev/video0"/>
+    <arg name="camera_name_1" default="camera_1"/>
+    <arg name="subscriber_name_1" default="subscriber_1"/>
+
+    <arg name="camera_ID_2" default="/dev/video2"/>
+    <arg name="camera_name_2" default="camera_2"/>
+    <arg name="subscriber_name_2" default="subscriber_2"/>
+
+    <arg name="fps" default = "24"/> -->
+
+
+    <!-- Define arguments -->
+    <!-- <arg name="camera_name" default="camera_1"/>
+    <arg name="camera_ID" default="/dev/video0"/>
+    <arg name="fps" default="30"/>
+    <arg name="subscriber_name" default="image_subscriber_1"/>
+    <arg name="namespace" default="camera_1_group"/> -->
+
+    <xacro:property name="camera_name" value="camera_1"/>
+    <xacro:property name="camera_ID" value="/dev/video0"/>
+    <xacro:property name="fps" value="30"/>
+    <xacro:property name="subscriber_name" value="image_subscriber_1"/>
+    <xacro:property name="topic_name" value="/image_raw"/>
+    <xacro:property name="detections_name" value="/yolov5/detections"/>
+
+
+
+    <!-- <xacro:macro name="load_sensor" params="name type:=camera position:='0 0 0'">
+        <node name="${name}_node" pkg="sensor_package" type="${type}_node">
+        <param name="position" value="${position}"/>
+        </node>
+    </xacro:macro> -->
+
+    <xacro:macro name="camera_group" params="prefix:=camera_name subscriber:=subcriber_name topic:=topic_name detections:=detections_name">
+        <group ns="${prefix}_group">
+            <node name="${prefix}" pkg="testpackage" type="image_publisher_launch.py" output="screen" args="${camera_ID} /${prefix}_group/image_raw ${fps}">
+                <param name="camera_name" type="string" value="${prefix}" />
+            </node>
+
+            <node name="yolov5_node" pkg="yolov5_ros" type="yolov5_node.py" output="screen" args=""/>
+
+            <!-- Subscriber node to show predictions -->
+            <node name="${subscriber_name}" pkg="testpackage" type="image_subscriber.py" args="/${prefix}_group/${detections_name}" output="screen">
+                <param name="topic_name" type="string" value="/${prefix}_group/${detections_name}" />
+            </node>
+        </group>
+    </xacro:macro>
+
+    <xacro:camera_group prefix="camera_1" subcriber_name="image_subscriber_1" topic_name="image_raw_1" detections_name="yolov5_camera1"/>
+
+
+    <!-- Argument for the first camera -->
+    <!-- <arg name="camera_name_1" default="/dev/video0"/> -->
+    <!-- Argument for the second camera -->
+    <!-- <arg name="camera_name_2" default="/dev/video2"/> -->
+
+    <!-- Define a macro for the camera group -->
+    <!-- <xacro:macro name="camera_group">
+        <arg name="namespace"/>
+        <arg name="camera_name"/>
+        <arg name="camera_ID"/>
+        <arg name="fps"/>
+        <arg name="subscriber_name"/>
+
+        <group ns="$(arg namespace)">
+            <node name="${arg camera_name}" pkg="testpackage" type="image_publisher_launch.py" output="screen" args="${arg camera_ID} /${arg namespace}/image_raw ${arg fps}">
+                <param name="camera_name" type="string" value="${arg camera_name}" />
+            </node>
+
+            <node name="yolov5_node" pkg="yolov5_ros" type="yolov5_node.py" output="screen"/> -->
+
+            <!-- Subscriber node to show predictions -->
+            <!-- <node name="${arg subscriber_name}" pkg="testpackage" type="image_subscriber.py" args="/${arg namespace}/yolov5/detections" output="screen">
+                <param name="topic_name" type="string" value="/${arg namespace}/image_raw" />
+            </node>
+        </group>
+    <xacro:camera_group/> -->
+    
+
+    <!-- Instantiate the macro for the first camera group -->
+    <!-- <camera_group namespace="camera_1_group" camera_name="camera_1" camera_ID="/dev/video0" fps="30" subscriber_name="image_subscriber_1"/> -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <!-- Node for the first camera -->
+    <!-- <group ns="camera_1_group">
+        <node name="$(arg camera_name_1)" pkg="testpackage" type="image_publisher_launch.py" output="screen" args="$(arg camera_ID_1) /image_raw_1 $(arg fps)">
+            <param name="camera_name" type="string" value="$(arg camera_name_1)" />
+        </node> -->
+        <!--node name="yolov5_node" pkg="yolov5_ros" type="yolov5_node.py" output="screen"/> -->
+
+        <!-- Subscriber node to show predictions -->
+        <!-- <node name="$(arg subscriber_name_1)" pkg="testpackage" type="image_subscriber.py" args="/yolov5/detections" output="screen">
+            <param name="topic_name" type="string" value="/image_raw_1" />
+        </node>
+    </group> -->
+
+    <!-- Node for the second camera -->
+    <!-- <node name="$(arg camera_name_2)" pkg="testpackage" type="image_publisher_launch.py" output="screen" args="$(arg camera_ID_2) /image_raw_2 $(arg fps)">
+        <param name="camera_name" type="string" value="$(arg camera_name_2)" />
+    </node> -->
+
+    <!-- Subscriber node for the first camera -->
+    <!-- <node name="$(arg subscriber_name_1)" pkg="testpackage" type="image_subscriber.py" args="/image_raw_1" output="screen">
+        <param name="topic_name" type="string" value="/image_raw_1" />
+    </node> -->
+
+    <!-- Subscriber node for the second camera -->
+    <!-- <node name="$(arg subscriber_name_2)" pkg="testpackage" type="image_subscriber.py" args="/yolov5/detections" output="screen">
+        <param name="topic_name" type="string" value="/image_raw_2" />
+    </node> -->
+</launch>

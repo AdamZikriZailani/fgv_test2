@@ -1,0 +1,38 @@
+<launch xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- 1. Advanced Property Usage -->
+  <xacro:property name="pi" value="3.1415926535897931" />
+  <xacro:property name="radius" value="0.2" />
+  <xacro:property name="circumference" value="${2 * pi * radius}" />
+
+  <!-- 2. Conditional Statements -->
+  <xacro:property name="use_gpu" value="true" />
+  <xacro:if value="${use_gpu}">
+    <node name="gpu_processor" pkg="my_package" type="gpu_node" />
+  </xacro:if>
+  <xacro:unless value="${use_gpu}">
+    <node name="cpu_processor" pkg="my_package" type="cpu_node" />
+  </xacro:unless>
+
+  <!-- 3. Macros with Arguments -->
+  <xacro:macro name="load_sensor" params="name type:=camera position:='0 0 0'">
+    <node name="${name}_node" pkg="sensor_package" type="${type}_node">
+      <param name="position" value="${position}"/>
+    </node>
+  </xacro:macro>
+
+  <!-- Using the macro -->
+  <xacro:load_sensor name="front_camera" />
+  <xacro:load_sensor name="depth_sensor" type="depth" position="0.1 0 0.05" />
+
+  <!-- 4. Including Other Xacro Files -->
+  <xacro:include filename="$(find my_package)/launch/common_nodes.xacro" />
+
+  <!-- 5. Using Math Expressions -->
+  <xacro:property name="robot_height" value="${1.5 + 0.2}" />
+  <param name="max_reach" value="${robot_height * 0.8}" />
+
+  <!-- 6. Passing Xacro Properties to Nodes -->
+  <node name="controller" pkg="my_package" type="controller_node">
+    <param name="max_velocity" value="${circumference / 2}" />
+  </node>
+</launch>
