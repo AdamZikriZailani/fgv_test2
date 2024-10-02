@@ -49,19 +49,21 @@ def launch_cameras(camera_count):
     # extra_subscriber_launch.start()
     
     # Monitor the launch processes and restart if necessary
-    try:
-        while not rospy.is_shutdown():
-            for idx, (launch, launch_file, launch_args) in enumerate(launch_processes):
-                if not launch.pm.is_alive():
-                    rospy.logwarn(f"Process for camera {idx+1} has stopped. Restarting...")
-                    new_launch = roslaunch.parent.ROSLaunchParent(uuid, [(launch_file, launch_args)])
-                    launch_processes[idx] = (new_launch, launch_file, launch_args)
-                    new_launch.start()
-            time.sleep(1)
-    except KeyboardInterrupt:
-        rospy.loginfo("Shutting down all camera processes.")
-        for launch, _, _ in launch_processes:
-            launch.shutdown()
+    # try:
+    #     while not rospy.is_shutdown():
+    #         for idx, (launch, launch_file, launch_args) in enumerate(launch_processes):
+    #             if not launch.pm.is_alive():
+    #                 rospy.logwarn(f"Process for camera {idx+1} has stopped. Restarting...")
+    #                 new_launch = roslaunch.parent.ROSLaunchParent(uuid, [(launch_file, launch_args)])
+    #                 launch_processes[idx] = (new_launch, launch_file, launch_args)
+    #                 new_launch.start()
+    #         time.sleep(1)
+    # except KeyboardInterrupt:
+    #     rospy.loginfo("Shutting down all camera processes.")
+    #     for launch, _, _ in launch_processes:
+    #         launch.shutdown()
+    #     # Keep the launch process running
+    launch.spin()
 
 if __name__ == "__main__":
     rospy.init_node("camera_launcher", anonymous=True)
