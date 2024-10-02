@@ -1,0 +1,39 @@
+<launch>
+    <!-- Define arguments with default values -->
+    <arg name="namespace" default="1"/>   
+    <arg name="camera_name" default="1"/>
+    <arg name="camera_ID" default="1"/>
+    <arg name="subscriber_name" default="1"/>
+    <arg name="image_topic" default="1"/>
+    <arg name="detection_topic" default="1"/>
+
+
+    <!-- Define the camera group -->
+    <group ns="$(arg namespace)">
+        <node pkg="libuvc_camera" type="camera_node" name="$(arg camera_name)">
+            <param name="vendor" value="0x2560"/>
+            <param name="product" value="0xc128"/>
+            <param name="serial" value=""/>
+            <!-- <param name="index" value="$(arg camera_ID)"/> -->
+            <param name="index" value="$(arg camera_ID)"/>
+            <param name="width" value="1280"/>
+            <param name="height" value="720"/>
+            <param name="video_mode" value="mjpeg"/>
+            <param name="frame_rate" value="60"/>
+        </node>
+
+
+        <!-- Detection node -->    
+        <node name="yolov5_node" pkg="testpackage" type="yolov5_node.py" output="screen" args="image_raw $(arg detection_topic)"/>
+
+        <!-- Subscriber node to show predictions -->
+        <node name="$(arg subscriber_name)" pkg="testpackage" type="image_subscriber.py" args="$(arg detection_topic)" output="screen">
+            <param name="topic_name" type="string" value="$(arg namespace)/image_raw" />
+        </node>
+
+    </group>
+
+
+
+
+</launch>

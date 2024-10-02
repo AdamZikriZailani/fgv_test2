@@ -1,2 +1,0 @@
-testpackage
--DCATKIN_DEVEL_PREFIX=/home/adam/GitRepositories/fgv_test2/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/adam/GitRepositories/fgv_test2/catkin_ws/install -G Unix Makefiles
