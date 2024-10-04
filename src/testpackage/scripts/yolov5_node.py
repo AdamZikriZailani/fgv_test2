@@ -1,42 +1,79 @@
 #!/usr/bin/python3
 
 import rospy
+from sensor_msgs.msg import Image
+from std_msgs.msg import String
+from cv_bridge import CvBridge, CvBridgeError
 import torch
 import cv2
-from cv_bridge import CvBridge, CvBridgeError
-from sensor_msgs.msg import Image
+import numpy as np
 import sys
 
+# Load the YOLOv5 model
+model = torch.hub.load('ultralytics/yolov5', 'yolov5m', pretrained=True)
+
+# Define the region of interest (ROI) dimensions
+ROI_WIDTH = 800
+ROI_HEIGHT = 450
 
 class YOLOv5Node:
     def __init__(self, image_topic, detection_topic):
         self.bridge = CvBridge()
-        self.model = torch.hub.load('ultralytics/yolov5', 'yolov5m', pretrained=True)
-        self.model.classes = [0]
-        self.image_sub = rospy.Subscriber(image_topic, Image, self.image_callback)
+        self.image_sub = rospy.Subscriber(image_topic, Image, self.callback)
         self.image_pub = rospy.Publisher(detection_topic, Image, queue_size=10)
 
-    def image_callback(self, data):
+    def callback(self, data):
         try:
             cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
         except CvBridgeError as e:
-            rospy.logerr(f"CvBridge Error: {e}")
+            rospy.logerr(e)
             return
 
-        results = self.model(cv_image)
-        detections = results.render()[0]
+        # Get the dimensions of the camera feed
+        camera_height, camera_width, _ = cv_image.shape
 
+        # Calculate the ROI coordinates to be centered and touching the bottom of the camera feed
+        x = (camera_width - ROI_WIDTH) // 2
+        y = camera_height - ROI_HEIGHT
+        w = ROI_WIDTH
+        h = ROI_HEIGHT
+
+        # Draw the ROI boundary as a trapezium on the original image
+        roi_pts = np.array([
+            [x + w // 4, y],          # Top left
+            [x + 3 * w // 4, y],      # Top right
+            [x + w, y + h],           # Bottom right
+            [x, y + h]                # Bottom left
+        ], np.int32)
+        roi_pts = roi_pts.reshape((-1, 1, 2))
+        cv2.polylines(cv_image, [roi_pts], isClosed=True, color=(255, 0, 0), thickness=2)  # Blue polygon
+
+        # Crop the image to the ROI
+        roi_image = cv_image[y:y+h, x:x+w]
+
+        # Perform detection on the ROI
+        results = model(roi_image)
+
+        # Filter results to only include humans (class 0 in COCO dataset) with confidence > 0.70
+        humans = results.xyxy[0][(results.xyxy[0][:, -1] == 0) & (results.xyxy[0][:, 4] > 0.70)]
+
+        # Draw bounding boxes and labels on the original image
+        for *box, conf, cls in humans:
+            x1, y1, x2, y2 = map(int, box)
+            # Define the vertices of the bounding box polygon
+            pts = np.array([[x1 + x, y1 + y], [x2 + x, y1 + y], [x2 + x, y2 + y], [x1 + x, y2 + y]], np.int32)
+            pts = pts.reshape((-1, 1, 2))
+            cv2.polylines(cv_image, [pts], isClosed=True, color=(0, 255, 0), thickness=2)  # Green polygon
+            label = f"Person: {conf:.2f}"
+            cv2.putText(cv_image, label, (x1 + x, y1 + y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+        # Publish the detections
         try:
-            detection_msg = self.bridge.cv2_to_imgmsg(detections, "bgr8")
-            self.image_pub.publish(detection_msg)
+            self.image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image, "bgr8"))
         except CvBridgeError as e:
-            rospy.logerr(f"CvBridge Error: {e}")
+            rospy.logerr(e)
 
 if __name__ == '__main__':
-    # if len(sys.argv) != 2:
-    #     rospy.logerr("Usage: yolov5_node.py <image_topic> <detection_topic>")
-    #     sys.exit(1)
-
     image_topic = sys.argv[1]
     detection_topic = sys.argv[2]
 
@@ -48,79 +85,78 @@ if __name__ == '__main__':
         rospy.loginfo("Shutting down YOLOv5 node")
 
 
+# import rospy
+# from sensor_msgs.msg import Image
+# from std_msgs.msg import String
+# from cv_bridge import CvBridge, CvBridgeError
+# import torch
+# import cv2
+# import numpy as np
+# import sys
 
-##--working but detects everything--#
+# # Load the YOLOv5 model
+# model = torch.hub.load('ultralytics/yolov5', 'yolov5m', pretrained=True)
+
+# # Define the region of interest (ROI)
+# ROI = (200, 100, 800, 650)  # Example ROI (x, y, width, height)
 
 # class YOLOv5Node:
-#     def __init__(self):
+#     def __init__(self, image_topic, detection_topic):
 #         self.bridge = CvBridge()
-#         self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
-#         self.image_sub = rospy.Subscriber("/image_raw_1", Image, self.image_callback)
-#         self.image_pub = rospy.Publisher("/yolov5/detections", Image, queue_size=10)
+#         self.image_sub = rospy.Subscriber(image_topic, Image, self.callback)
+#         self.image_pub = rospy.Publisher(detection_topic, Image, queue_size=10)
 
-#     def image_callback(self, data):
+#     def callback(self, data):
 #         try:
 #             cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
 #         except CvBridgeError as e:
-#             rospy.logerr(f"CvBridge Error: {e}")
+#             rospy.logerr(e)
 #             return
 
-#         results = self.model(cv_image)
-#         detections = results.render()[0]
+#         # Draw the ROI boundary as a trapezium on the original image
+#         x, y, w, h = ROI
+#         roi_pts = np.array([
+#             [x + w // 4, y],          # Top left
+#             [x + 3 * w // 4, y],      # Top right
+#             [x + w, y + h],           # Bottom right
+#             [x, y + h]                # Bottom left
+#         ], np.int32)
+#         roi_pts = roi_pts.reshape((-1, 1, 2))
+#         cv2.polylines(cv_image, [roi_pts], isClosed=True, color=(255, 0, 0), thickness=2)  # Blue polygon
 
+#         # Create a mask for the trapezium ROI
+#         mask = np.zeros(cv_image.shape[:2], dtype=np.uint8)
+#         cv2.fillPoly(mask, [roi_pts], 255)
+
+#         # Crop the image to the ROI using the mask
+#         roi_image = cv2.bitwise_and(cv_image, cv_image, mask=mask)
+#         roi_image = roi_image[y:y+h, x:x+w]
+
+#         # Perform detection on the ROI
+#         results = model(roi_image)
+
+#         # Filter results to only include humans (class 0 in COCO dataset) with confidence > 0.60
+#         humans = results.xyxy[0][(results.xyxy[0][:, -1] == 0) & (results.xyxy[0][:, 4] > 0.50)]
+
+#         # Draw bounding boxes and labels on the original image
+#         for *box, conf, cls in humans:
+#             x1, y1, x2, y2 = map(int, box)
+#             cv2.rectangle(cv_image, (x1 + x, y1 + y), (x2 + x, y2 + y), (0, 255, 0), 2)  # Green bounding boxes
+#             label = f"Person: {conf:.2f}"
+#             cv2.putText(cv_image, label, (x1 + x, y1 + y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+#         # Publish the detections
 #         try:
-#             detection_msg = self.bridge.cv2_to_imgmsg(detections, "bgr8")
-#             self.image_pub.publish(detection_msg)
+#             self.image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image, "bgr8"))
 #         except CvBridgeError as e:
-#             rospy.logerr(f"CvBridge Error: {e}")
+#             rospy.logerr(e)
 
 # if __name__ == '__main__':
+#     image_topic = sys.argv[1]
+#     detection_topic = sys.argv[2]
+
 #     rospy.init_node('yolov5_node', anonymous=True)
-#     yolov5_node = YOLOv5Node()
-#     try:
-#         rospy.spin()
-#     except KeyboardInterrupt:
-#         rospy.loginfo("Shutting down YOLOv5 node")
-
-
-#---working for detect human but highly ineffecient--#
-
-# class YOLOv5Node:
-#     def __init__(self):
-#         self.bridge = CvBridge()
-#         self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
-#         self.image_sub = rospy.Subscriber("/image_raw_1", Image, self.image_callback)
-#         self.image_pub = rospy.Publisher("/yolov5/detections", Image, queue_size=10)
-#         self.human_class_id = 0  # Class ID for 'person' in COCO dataset
-
-#     def image_callback(self, data):
-#         try:
-#             cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
-#         except CvBridgeError as e:
-#             rospy.logerr(f"CvBridge Error: {e}")
-#             return
-
-#         results = self.model(cv_image)
-#         detections = results.xyxy[0]  # Get the detections in xyxy format
-
-#         # Filter detections to keep only humans
-#         human_detections = [d for d in detections if int(d[5]) == self.human_class_id]
-
-#         # Draw bounding boxes for human detections
-#         for det in human_detections:
-#             x1, y1, x2, y2, conf, cls = det
-#             cv2.rectangle(cv_image, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
-#             cv2.putText(cv_image, f'Human {conf:.2f}', (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
-
-#         try:
-#             detection_msg = self.bridge.cv2_to_imgmsg(cv_image, "bgr8")
-#             self.image_pub.publish(detection_msg)
-#         except CvBridgeError as e:
-#             rospy.logerr(f"CvBridge Error: {e}")
-
-# if __name__ == '__main__':
-#     rospy.init_node('yolov5_node', anonymous=True)
-#     yolov5_node = YOLOv5Node()
+#     yolov5_node = YOLOv5Node(image_topic, detection_topic)
 #     try:
 #         rospy.spin()
 #     except KeyboardInterrupt:

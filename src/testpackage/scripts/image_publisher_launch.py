@@ -30,7 +30,7 @@ def publish_image(camera_name, topic_name, frame_rate):
         img = img[start_y:start_y + size, start_x:start_x + size]
 
         # Rotate the image 90 degrees to the left
-        img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+        # img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
 
         # Publish the image to the specified topic
         try:

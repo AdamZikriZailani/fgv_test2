@@ -1,0 +1,9 @@
+//todo
+- decide on whether to use one or two cameras 
+- make a flag to detect whenever there is a human detected within the ROI
+- make a UI that will show the detection
+- reduce "flickering" effect with detection
+- 
+// Good to have but not necessary
+- automatic ground alllignment and ROI deployment 
+- build a deployable app using an ICON

@@ -34,35 +34,7 @@ def launch_cameras(camera_count):
         launch = roslaunch.parent.ROSLaunchParent(uuid, [(launch_file, launch_args)])
         launch_processes.append((launch, launch_file, launch_args))
         launch.start()
-    
-    # Launch an extra image subscriber node for the first camera
-    # extra_subscriber_name = "extra_image_subscriber_1"
-    # extra_subscriber_args = [
-    #     f"namespace:=camera_1_group",
-    #     f"camera_name:=camera_1",
-    #     f"subscriber_name:={extra_subscriber_name}",
-    #     f"detection_topic:=camera_1/detections_1",
-    # ]
-    # extra_subscriber_launch_file = roslaunch.rlutil.resolve_launch_arguments(['/home/user/GitRepositories/fgv_test2/src/testpackage/launch/extra_subscriber.launch'])[0]
-    # extra_subscriber_launch = roslaunch.parent.ROSLaunchParent(uuid, [(extra_subscriber_launch_file, extra_subscriber_args)])
-    # launch_processes.append((extra_subscriber_launch, extra_subscriber_launch_file, extra_subscriber_args))
-    # extra_subscriber_launch.start()
-    
-    # Monitor the launch processes and restart if necessary
-    # try:
-    #     while not rospy.is_shutdown():
-    #         for idx, (launch, launch_file, launch_args) in enumerate(launch_processes):
-    #             if not launch.pm.is_alive():
-    #                 rospy.logwarn(f"Process for camera {idx+1} has stopped. Restarting...")
-    #                 new_launch = roslaunch.parent.ROSLaunchParent(uuid, [(launch_file, launch_args)])
-    #                 launch_processes[idx] = (new_launch, launch_file, launch_args)
-    #                 new_launch.start()
-    #         time.sleep(1)
-    # except KeyboardInterrupt:
-    #     rospy.loginfo("Shutting down all camera processes.")
-    #     for launch, _, _ in launch_processes:
-    #         launch.shutdown()
-    #     # Keep the launch process running
+        
     launch.spin()
 
 if __name__ == "__main__":
