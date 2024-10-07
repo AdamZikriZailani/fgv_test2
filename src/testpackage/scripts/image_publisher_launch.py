@@ -11,7 +11,19 @@ def publish_image(camera_name, topic_name, frame_rate):
     image_pub = rospy.Publisher(topic_name, Image, queue_size=10)
     bridge = CvBridge()
     capture = cv2.VideoCapture(camera_name)
+
+    # Set the camera resolution to 1080 by 1920
+    capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1280.0)
+    capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 720.0)
+
+    # Verify if the resolution is set correctly
+    actual_width = capture.get(cv2.CAP_PROP_FRAME_WIDTH)
+    actual_height = capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
+    rospy.loginfo(f"Requested resolution: 1920x1080, Actual resolution: {actual_width}x{actual_height}")
+
     rate = rospy.Rate(frame_rate)
+
+
 
     while not rospy.is_shutdown():
         # Capture a frame
@@ -20,17 +32,12 @@ def publish_image(camera_name, topic_name, frame_rate):
             rospy.logerr("Could not grab a frame!")
             break
 
-        # Determine the size of the square
-        height, width, _ = img.shape
-        size = min(height, width)
+        # Capture the full frame of the camera
+        # height, width, _ = img.shape
+        # rospy.loginfo(f"Captured frame of size: {width}x{height}")
 
-        # Crop the image to a square
-        start_x = (width - size) // 2
-        start_y = (height - size) // 2
-        img = img[start_y:start_y + size, start_x:start_x + size]
-
-        # Rotate the image 90 degrees to the left
-        # img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+        # Rotate the image 180 degrees
+        img = cv2.rotate(img, cv2.ROTATE_180)
 
         # Publish the image to the specified topic
         try:

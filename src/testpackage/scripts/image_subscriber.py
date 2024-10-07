@@ -18,7 +18,9 @@ def image_callback(msg):
     except CvBridgeError as e:
         rospy.logerr(f"Error converting image: {e}")
 
-def main():
+
+
+if __name__ == '__main__':
     rospy.init_node('image_subscriber', anonymous=True)
     if len(sys.argv) < 2:
         rospy.logerr("Usage: rosrun testpackage image_subscriber.py <topic_name>")
@@ -32,6 +34,3 @@ def main():
     except KeyboardInterrupt:
         rospy.loginfo("Shutting down!")
         cv2.destroyAllWindows()
-
-if __name__ == '__main__':
-    main()

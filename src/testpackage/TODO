@@ -4,6 +4,7 @@
 - make a UI that will show the detection
 - reduce "flickering" effect with detection
 - 
+
 // Good to have but not necessary
-- automatic ground alllignment and ROI deployment 
+- automatic ground alllignment and ROI deployment (using aruco markers)
 - build a deployable app using an ICON

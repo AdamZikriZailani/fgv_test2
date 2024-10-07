@@ -29,6 +29,9 @@ class YOLOv5Node:
             rospy.logerr(e)
             return
 
+        # Flip the image vertically
+        cv_image = cv2.flip(cv_image, 0)
+
         # Get the dimensions of the camera feed
         camera_height, camera_width, _ = cv_image.shape
 
