@@ -28,7 +28,7 @@ def launch_cameras(camera_count):
             f"detection_topic:={camera_name}/detections_{i+1}",
         ]
         
-        launch_file = roslaunch.rlutil.resolve_launch_arguments(['/home/adam/GitRepositories/fgv_test2/src/testpackage/launch/cam4.launch'])[0]
+        launch_file = roslaunch.rlutil.resolve_launch_arguments(['/home/user/GitRepositories/fgv_test2/src/testpackage/launch/cam4.launch'])[0]
         
         # Create the launch configuration
         launch = roslaunch.parent.ROSLaunchParent(uuid, [(launch_file, launch_args)])
